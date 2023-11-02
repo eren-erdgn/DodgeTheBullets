@@ -20,6 +20,7 @@ public class TurretDetection : MonoBehaviour
 
     
     public static event Action OnPlayerInRange;
+    public static event Action OnPlayerNotInRange;
     
 
     private void Awake()
@@ -50,6 +51,7 @@ public class TurretDetection : MonoBehaviour
         }
         else
         {
+            OnPlayerNotInRange?.Invoke();
             _circleRenderer.materials[0].color = Color.gray;
         }
             

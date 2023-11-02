@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     [Range(100,200)]
     [SerializeField] private int maxHealth = 100;
     
+    private Transform _playerPosition;
+    
     //[SerializeField] private GameObject bulletPrefab;
     //[SerializeField] private Transform bulletSpawn;
     //[SerializeField] private float bulletSpeed = 6f;
@@ -36,7 +38,7 @@ public class Player : MonoBehaviour
     {
         HealTaken(10);
     }
-
+    
     public int Health
     {
         get => health;
