@@ -15,6 +15,7 @@ namespace Turret
     
         private void Awake()
         {
+            
             _playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
             _playerPos = _playerTransform.position;
             _bulletPos = transform.position;

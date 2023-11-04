@@ -14,8 +14,15 @@ namespace Player
         private Transform _playerPosition;
     
         public static event Action OnPlayerHealthChanged;
+
+        private void Awake()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
         private void Start()
         {
+            
             OnPlayerHealthChanged?.Invoke();
         }
 

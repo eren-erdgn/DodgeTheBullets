@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Reflective
+  - TurretBullet
   layers:
   - Default
   - TransparentFX

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -2677774075574814263}
   m_Layer: 0
   m_Name: TurretRandomBullet
-  m_TagString: Reflective
+  m_TagString: TurretBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpeed: 10
+  collisionCount: 30
 --- !u!135 &8069769862231547924
 SphereCollider:
   m_ObjectHideFlags: 0
