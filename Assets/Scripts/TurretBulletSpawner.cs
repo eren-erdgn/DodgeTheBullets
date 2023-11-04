@@ -30,10 +30,12 @@ public class TurretBulletSpawner : MonoBehaviour
         TurretDetection.OnPlayerNotInRange += RandomModeOff;
     }
 
+   
 
     private void Update()
     {
         if(_isRandomModeOn)
+            
             SpawnRandomBullet();
         else
             SpawnBullet();

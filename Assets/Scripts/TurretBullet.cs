@@ -25,6 +25,13 @@ public class TurretBullet : MonoBehaviour
     {
         transform.Translate(_normalizedDistanceVector * (bulletSpeed * Time.deltaTime));
     }
-    
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if(other.gameObject.CompareTag("Player"))
+            Destroy(gameObject);
+        Vector3 normal = other.GetContact(0).normal;
+        Vector3 reflectedDirection = Vector3.Reflect(_normalizedDistanceVector, normal);
+        _normalizedDistanceVector = reflectedDirection;
+    }
 }

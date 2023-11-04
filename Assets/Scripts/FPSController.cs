@@ -23,9 +23,7 @@ public class FPSController : MonoBehaviour {
 
     private void Start () {
         _cam = Camera.main;
-
         _controller = GetComponent<CharacterController> ();
-
         _yaw = transform.eulerAngles.y;
         if (_cam != null) _pitch = _cam.transform.localEulerAngles.x;
         _smoothYaw = _yaw;
@@ -33,7 +31,7 @@ public class FPSController : MonoBehaviour {
     }
 
     private void Update () {
-
+        
         Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 
         Vector3 inputDir = new Vector3 (input.x, 0, input.y).normalized;
@@ -41,9 +39,7 @@ public class FPSController : MonoBehaviour {
 
         Vector3 targetVelocity = worldInputDir * moveSpeed;
         _velocity = Vector3.SmoothDamp (_velocity, targetVelocity, ref _smoothV, smoothMoveTime);
-
         _controller.Move (_velocity * Time.deltaTime);
-
         float mX = Input.GetAxisRaw ("Mouse X");
         float mY = Input.GetAxisRaw ("Mouse Y");
 
