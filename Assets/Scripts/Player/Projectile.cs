@@ -1,47 +1,51 @@
 using System;
-using Interface;
+using EventSystem;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Player
 {
-    public class Projectile : MonoBehaviour, IBullet
-    {
+    public class Projectile : MonoBehaviour {
+        
         private Camera _playerCamera;
-        private Ray _ray;
+        private Vector3 _rayOrigin;
+        private Vector3 _rayDirection;
+        private RaycastHit _hit;
         private Vector3 _rayToNormal;
+        private Vector3 _hitPos;
+        [SerializeField] private float lifetime = 3f;
         [SerializeField] private float speed = 100f;
+        [SerializeField] private float skinWidth = .1f;
 
         private void Awake()
         {
-            _playerCamera = Camera.main;
-            if (_playerCamera != null) _ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
-            _rayToNormal = _ray.direction;
+            Destroy(gameObject, lifetime);
         }
 
-        private void Update()
-        {
-            Move();
+        
+
+        private void Update () {
+            var moveDistance = speed * Time.deltaTime;
+            CheckCollisions (moveDistance);
+            transform.Translate (Vector3.forward* moveDistance);
         }
 
-        public void Move()
-        {
-            transform.Translate(_rayToNormal * (speed * Time.deltaTime));
+
+        private void CheckCollisions(float moveDistance) {
+            var transform1 = transform;
+            var ray = new Ray (transform1.position, transform1.forward);
+
+            if (Physics.Raycast(ray, out var hit, moveDistance + skinWidth)) {
+                OnHitObject(hit.collider);
+            }
         }
 
-        public void OnCollisionEnter(Collision other)
-        {
-            if (other.gameObject.CompareTag("TurretBullet"))
+        private void OnHitObject(Collider c) {
+            if ( c.gameObject.CompareTag("TurretBullet"))
             {
-                Destroy(other.gameObject);
-                Destroy(gameObject);
+                Events.OnBulletCountUp?.Invoke();
+                Destroy(c.gameObject);
                 
             }
-            else
-            {
-                Destroy(gameObject);
-            }
         }
-        
     }
 }

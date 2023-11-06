@@ -1,3 +1,4 @@
+using EventSystem;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -13,12 +14,12 @@ namespace UI
 
         private void OnEnable()
         {
-            PlayerActions.OnPlayerHealthChanged += DisplayHealth;
+            Events.OnDisplayPlayerHealth.AddListener(DisplayHealth);
         }
 
         private void OnDisable()
         {
-            PlayerActions.OnPlayerHealthChanged -= DisplayHealth;
+            Events.OnDisplayPlayerHealth.RemoveListener(DisplayHealth);
         }
 
     

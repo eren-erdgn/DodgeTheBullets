@@ -1,5 +1,4 @@
-using System;
-using Turret;
+using EventSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,36 +11,39 @@ namespace Player
         [SerializeField] private int maxHealth = 100;
     
         private Transform _playerPosition;
-    
-        public static event Action OnPlayerHealthChanged;
+        private int count;
 
         private void Awake()
         {
+            Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void Start()
         {
-            
-            OnPlayerHealthChanged?.Invoke();
+            Events.OnDisplayPlayerHealth?.Invoke();
         }
 
         private void OnEnable()
         {
-        
-            TurretDetection.OnPlayerInRange += HealTaken;
+            Events.OnBulletCountUp.AddListener(countUp);
+            Events.OnPlayerGetDamage.AddListener(DamageTaken);
+            Events.OnPlayerGetHealth.AddListener(HealTaken);
         }
 
         private void OnDisable()
         {
-            TurretDetection.OnPlayerInRange -= HealTaken;
+            Events.OnBulletCountUp.RemoveListener(countUp);
+            Events.OnPlayerGetDamage.RemoveListener(DamageTaken);
+            Events.OnPlayerGetHealth.RemoveListener(HealTaken);
         }
-
-        private void HealTaken()
+        
+        private void countUp()
         {
-            HealTaken(10);
+            count++;
+            Debug.Log(count);
         }
-    
+        
         public int Health
         {
             get => health;
@@ -49,7 +51,7 @@ namespace Player
             {
                 health = value;
                 health = Mathf.Clamp(health, 0, maxHealth);
-                OnPlayerHealthChanged?.Invoke();
+                Events.OnDisplayPlayerHealth?.Invoke();
             }
         }
 
@@ -57,6 +59,7 @@ namespace Player
         private void DamageTaken(int damage)
         { 
             Health = health - damage;
+            Events.OnDisplayPlayerHealth?.Invoke();
             if (health > 0) return;
             Destroy(gameObject);
             SceneManager.LoadScene(sceneBuildIndex: 0);

@@ -1,3 +1,4 @@
+using EventSystem;
 using UnityEngine;
 
 namespace Turret
@@ -18,14 +19,12 @@ namespace Turret
 
         private void OnEnable()
         {
-            TurretDetection.OnPlayerInRange += RandomModeOn;
-            TurretDetection.OnPlayerNotInRange += RandomModeOff;
+            Events.OnPlayerInRange.AddListener(RandomModeTrigger);
         }
 
         private void OnDisable()
         {
-            TurretDetection.OnPlayerInRange -= RandomModeOn;
-            TurretDetection.OnPlayerNotInRange += RandomModeOff;
+            Events.OnPlayerInRange.RemoveListener(RandomModeTrigger);
         }
 
    
@@ -54,13 +53,9 @@ namespace Turret
             Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
             _timer = 0f;
         }
-        private void RandomModeOn()
+        private void RandomModeTrigger(bool flag)
         {
-            _isRandomModeOn = true;
-        }
-        private void RandomModeOff()
-        {
-            _isRandomModeOn = false;
+            _isRandomModeOn = flag;
         }
     
     

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Reflective
   - TurretBullet
+  - Projectile
   layers:
   - Default
   - TransparentFX

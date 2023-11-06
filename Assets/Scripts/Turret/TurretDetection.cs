@@ -1,4 +1,5 @@
 using System;
+using EventSystem;
 using UnityEngine;
 
 namespace Turret
@@ -17,11 +18,13 @@ namespace Turret
         private Vector3 _playerPos;
     
         private float _timer;
+        [SerializeField]private int healAmount = 5;
         [SerializeField]private float healDelay= 3f;
-
+        
+        
     
-        public static event Action OnPlayerInRange;
-        public static event Action OnPlayerNotInRange;
+        //public static event Action OnPlayerInRange;
+        //public static event Action OnPlayerNotInRange;
     
 
         private void Awake()
@@ -52,14 +55,17 @@ namespace Turret
             }
             else
             {
-                OnPlayerNotInRange?.Invoke();
+                Events.OnPlayerInRange?.Invoke(false);
+                //OnPlayerNotInRange?.Invoke();
                 _circleRenderer.materials[0].color = Color.gray;
             }
             
         }
         private void GiveHealth()
         {
-            OnPlayerInRange?.Invoke();
+            Events.OnPlayerInRange?.Invoke(true);
+            Events.OnPlayerGetHealth?.Invoke(healAmount);
+            //OnPlayerInRange?.Invoke();
         }
         private void CalculateDistance()
         {

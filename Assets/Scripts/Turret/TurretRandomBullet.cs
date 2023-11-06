@@ -1,3 +1,4 @@
+using EventSystem;
 using Interface;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Turret
         private float _bulletY;
         private float _randomZ;
         [SerializeField]private int collisionCount = 30;
+        [SerializeField] private int damage = 5;
         private int _collisionCountIndex;
     
     
@@ -37,16 +39,25 @@ namespace Turret
 
         public void OnCollisionEnter(Collision other)
         {
-            if(other.gameObject.CompareTag("Player"))
+            if (other.gameObject.CompareTag("Player"))
+            {
+                Events.OnPlayerGetDamage?.Invoke(damage);
                 Destroy(gameObject);
+            }
+                
         
-            _collisionCountIndex++;
+            if (other.gameObject.CompareTag("Reflective"))
+            {
+                _collisionCountIndex++;
         
-            if(_collisionCountIndex > collisionCount)
-                Destroy(gameObject);
-            Vector3 normal = other.GetContact(0).normal;
-            Vector3 reflectedDirection = Vector3.Reflect(_normalizedDistanceVector, normal);
-            _normalizedDistanceVector = reflectedDirection;
+                if(_collisionCountIndex > collisionCount)
+                    Destroy(gameObject);
+        
+                Vector3 normal = other.GetContact(0).normal;
+                Vector3 reflectedDirection = Vector3.Reflect(_normalizedDistanceVector, normal);
+                _normalizedDistanceVector = reflectedDirection;
+                
+            }
         }
     
     }

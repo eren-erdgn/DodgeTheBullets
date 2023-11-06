@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -8,11 +6,12 @@ namespace Player
     {
         [SerializeField] private Transform projectileSpawnPoint;
         [SerializeField] private Projectile projectilePrefab;
+        private Camera _playerCamera;
+        private Ray _ray;
+        private Vector3 _rayToNormal;
         
         private Transform _playerPosition;
         private Vector3 _playerPos;
-
-        private bool _isRandomModeOn;
     
         [SerializeField]private float msBetweenShots =100f;
         private float _nextShotTime;
@@ -25,14 +24,13 @@ namespace Player
             }
             
         }
-
         
 
         private void SpawnBullet()
         {
             if (!(Time.time > _nextShotTime)) return;
             _nextShotTime = Time.time + msBetweenShots / 1000;
-            Instantiate(projectilePrefab, projectileSpawnPoint.position,Quaternion.identity);
+            Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
         }
     }
     

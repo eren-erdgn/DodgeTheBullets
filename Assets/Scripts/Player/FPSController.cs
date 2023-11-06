@@ -1,3 +1,4 @@
+using EventSystem;
 using UnityEngine;
 
 namespace Player
@@ -20,6 +21,7 @@ namespace Player
         private float _pitchSmoothV;
         private Vector3 _velocity;
         private Vector3 _smoothV;
+        private float _timer;
 
         private void Start () {
             _cam = Camera.main;
@@ -33,6 +35,20 @@ namespace Player
         private void Update () {
         
             Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+            if (input == Vector2.zero)
+            {
+                _timer += Time.deltaTime;
+                if (_timer >= 2f)
+                {
+                    
+                    Events.OnPlayerGetDamage?.Invoke(5);
+                    _timer = 0f;
+                }
+            }
+            else
+            {
+                _timer = 0f;
+            }
 
             Vector3 inputDir = new Vector3 (input.x, 0, input.y).normalized;
             Vector3 worldInputDir = transform.TransformDirection (inputDir);
